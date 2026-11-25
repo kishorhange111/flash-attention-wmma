@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flash-attention-wmma"
+version = "0.1.0"
+description = "FlashAttention-2 forward in CUDA C++ with WMMA tensor-core instructions for Turing (T4): online softmax in shared memory, causal tile skipping, SASS check for HMMA, benchmarked against Triton and SDPA."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Kishor Hange" }]
+dependencies = ["torch>=2.2", "numpy>=1.26"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E741", "E731"]
