@@ -21,6 +21,7 @@
 // fp16 tensors. Causal masking skips key tiles past the query tile entirely and masks only
 // on the diagonal tile.
 
+#include <c10/cuda/CUDAException.h>
 #include <cuda_fp16.h>
 #include <mma.h>
 #include <torch/extension.h>
