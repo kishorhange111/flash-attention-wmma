@@ -26,8 +26,9 @@ def _ext():
     )
 
 
-def flash_attention(q, k, v, causal: bool = False, return_lse: bool = False):
-    o, lse = _ext().flash_fwd(q.contiguous(), k.contiguous(), v.contiguous(), causal)
+def flash_attention(q, k, v, causal: bool = False, return_lse: bool = False, padded: bool = True):
+    """padded=False selects the v1 layout (64-element row strides, 16-way bank conflicts)."""
+    o, lse = _ext().flash_fwd(q.contiguous(), k.contiguous(), v.contiguous(), causal, padded)
     return (o, lse) if return_lse else o
 
 

@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 
 import torch
@@ -25,17 +26,23 @@ def sass_counts() -> dict:
         ).stdout
     except (OSError, subprocess.CalledProcessError) as e:
         return {"error": str(e)}
-    lines = sass.splitlines()  # the extension contains this one kernel
-    return {
-        "HMMA": sum("HMMA" in ln for ln in lines),
-        "FFMA": sum("FFMA" in ln for ln in lines),
-        "LDS": sum(" LDS" in ln for ln in lines),
-    }
+    # one section per template instance: "Function : _Z16flash_fwd_kernelILi72ELi68EE..."
+    out, name = {}, None
+    for ln in sass.splitlines():
+        m = re.search(r"Function : \S*flash_fwd_kernelILi(\d+)ELi(\d+)E", ln)
+        if m:
+            name = "padded" if m.group(1) != "64" else "unpadded"
+            out[name] = {"HMMA": 0, "FFMA": 0, "LDS": 0, "STS": 0}
+        elif name:
+            for op in out[name]:
+                out[name][op] += f" {op}" in ln
+    return out
 
 
 def _impls(q, k, v, causal, triton_fa):
     impls = {
-        "wmma": lambda: flash_attention(q, k, v, causal),
+        "wmma v2 (padded)": lambda: flash_attention(q, k, v, causal),
+        "wmma v1": lambda: flash_attention(q, k, v, causal, padded=False),
         "sdpa": lambda: F.scaled_dot_product_attention(q, k, v, is_causal=causal),
     }
     if triton_fa is not None:

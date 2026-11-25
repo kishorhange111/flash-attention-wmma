@@ -22,15 +22,16 @@ def test_reference_matches_sdpa_on_cpu():
 
 
 @cuda
+@pytest.mark.parametrize("padded", [True, False])
 @pytest.mark.parametrize("causal", [False, True])
 @pytest.mark.parametrize("shape", [(1, 1, 64), (2, 4, 256), (1, 8, 1024), (3, 2, 192)])
-def test_matches_fp32_reference(shape, causal):
+def test_matches_fp32_reference(shape, causal, padded):
     from fawmma import flash_attention
 
     torch.manual_seed(0)
     b, h, n = shape
     q, k, v = (torch.randn(b, h, n, 64, device="cuda", dtype=torch.float16) for _ in range(3))
-    o, lse = flash_attention(q, k, v, causal, return_lse=True)
+    o, lse = flash_attention(q, k, v, causal, return_lse=True, padded=padded)
     ro, rlse = reference(q, k, v, causal)
     torch.testing.assert_close(o.float(), ro, atol=2e-3, rtol=2e-3)
     torch.testing.assert_close(lse, rlse, atol=1e-3, rtol=1e-3)
