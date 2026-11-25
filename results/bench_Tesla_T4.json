@@ -1,0 +1,90 @@
+{
+ "rows": [
+  {
+   "shape": "8\u00d716\u00d7512",
+   "causal": false,
+   "wmma v2 (padded)": 6.098657417294954,
+   "wmma v1": 1.5389482895239814,
+   "sdpa": 14.289803128087566,
+   "triton (no mma on sm75)": 0.517018839845089,
+   "max_abs_err_vs_sdpa": 0.0001220703125
+  },
+  {
+   "shape": "8\u00d716\u00d7512",
+   "causal": true,
+   "wmma v2 (padded)": 5.409118387449981,
+   "wmma v1": 1.3410915780776174,
+   "sdpa": 12.010258114728769,
+   "triton (no mma on sm75)": 0.12567014812956942,
+   "max_abs_err_vs_sdpa": 0.00048828125
+  },
+  {
+   "shape": "4\u00d716\u00d71024",
+   "causal": false,
+   "wmma v2 (padded)": 6.61222648515201,
+   "wmma v1": 1.5830222735974733,
+   "sdpa": 13.729117064561555,
+   "triton (no mma on sm75)": 0.5192865548426129,
+   "max_abs_err_vs_sdpa": 0.0001220703125
+  },
+  {
+   "shape": "4\u00d716\u00d71024",
+   "causal": true,
+   "wmma v2 (padded)": 6.121907872680109,
+   "wmma v1": 1.4584987903166937,
+   "sdpa": 12.89265165424255,
+   "triton (no mma on sm75)": 0.13376506779944908,
+   "max_abs_err_vs_sdpa": 0.00048828125
+  },
+  {
+   "shape": "2\u00d716\u00d72048",
+   "causal": false,
+   "wmma v2 (padded)": 6.704701297438184,
+   "wmma v1": 1.6083025743103216,
+   "sdpa": 13.478720276670805,
+   "triton (no mma on sm75)": 0.5191238921812111,
+   "max_abs_err_vs_sdpa": 0.0001220703125
+  },
+  {
+   "shape": "2\u00d716\u00d72048",
+   "causal": true,
+   "wmma v2 (padded)": 6.559072311086263,
+   "wmma v1": 1.5292488646455482,
+   "sdpa": 12.765768399268211,
+   "triton (no mma on sm75)": 0.13835370588555954,
+   "max_abs_err_vs_sdpa": 0.00048828125
+  },
+  {
+   "shape": "1\u00d716\u00d74096",
+   "causal": false,
+   "wmma v2 (padded)": 6.745615742273483,
+   "wmma v1": 1.6195908901315192,
+   "sdpa": 12.997108477519525,
+   "triton (no mma on sm75)": 0.5178431602199576,
+   "max_abs_err_vs_sdpa": 6.103515625e-05
+  },
+  {
+   "shape": "1\u00d716\u00d74096",
+   "causal": true,
+   "wmma v2 (padded)": 6.726354425189459,
+   "wmma v1": 1.5686822324048744,
+   "sdpa": 12.455656148110409,
+   "triton (no mma on sm75)": 0.1408477104917697,
+   "max_abs_err_vs_sdpa": 0.000244140625
+  }
+ ],
+ "sass": {
+  "unpadded": {
+   "HMMA": 128,
+   "FFMA": 1,
+   "LDS": 275,
+   "STS": 257
+  },
+  "padded": {
+   "HMMA": 128,
+   "FFMA": 1,
+   "LDS": 275,
+   "STS": 257
+  }
+ }
+}
